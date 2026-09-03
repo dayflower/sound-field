@@ -1,6 +1,6 @@
+import { resizeCanvas } from "../shared/canvas";
 import { CURVE_SIZE, MAX_GAIN_DB, MIN_GAIN_DB } from "./spectrum-curve";
 import type { NoiseState } from "./types";
-import { resizeCanvas } from "../shared/canvas";
 
 export function drawCurve(
   canvas: HTMLCanvasElement,

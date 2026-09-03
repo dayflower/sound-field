@@ -16,8 +16,7 @@ npm ci
 npm run dev
 ```
 
-Run the checks with `npm run check:types`, `npm run lint`, `npm run format:check`,
-and `npm test`.
+Run the checks with `npm run check` and `npm test`.
 
 ## License
 

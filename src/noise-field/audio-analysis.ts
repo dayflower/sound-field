@@ -1,9 +1,9 @@
 import { fft } from "./fft";
 import {
   CURVE_SIZE,
-  MAX_FREQUENCY,
   clampGain,
   curveFrequency,
+  MAX_FREQUENCY,
 } from "./spectrum-curve";
 
 export type AnalysisMode = "mean" | "median";

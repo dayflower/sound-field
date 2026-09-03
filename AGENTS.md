@@ -14,12 +14,10 @@
 - Install dependencies with `npm ci`.
 - Start the development server with `npm run dev`.
 - Run the quality checks relevant to every code change:
-  - `npm run check:types`
-  - `npm run lint`
-  - `npm run format:check`
+  - `npm run check`
   - `npm test`
 - Run `npm run build` before handing off changes that affect the build or page
-  entry points. It includes the TypeScript check.
+  entry points. It includes the type and code checks.
 
 ## TypeScript and UI conventions
 

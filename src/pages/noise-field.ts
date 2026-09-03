@@ -8,12 +8,12 @@ import { createInitialState, PRESETS, presetFor } from "../noise-field/presets";
 import { drawCurve, drawLiveSpectrum } from "../noise-field/renderers";
 import {
   BAND_FREQUENCIES,
-  clampCurve,
+  bandsToCurve,
   CURVE_SIZE,
+  clampCurve,
   curveFrequency,
   curveToBands,
   smoothCurveValues,
-  bandsToCurve,
 } from "../noise-field/spectrum-curve";
 import type { NoiseAnalysisMode, PresetId } from "../noise-field/types";
 import {

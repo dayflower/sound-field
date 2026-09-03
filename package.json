@@ -4,10 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run check:types && vite build",
+    "build": "npm run check && vite build",
+    "check": "npm run check:types && npm run check:code",
+    "check:code": "biome check .",
     "check:types": "tsc --noEmit",
-    "lint": "biome lint .",
-    "format:check": "biome format .",
+    "fix": "biome check --write .",
     "test": "vitest run",
     "preview": "vite preview"
   },

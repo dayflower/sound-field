@@ -4,7 +4,7 @@
     "indentStyle": "space"
   },
   "files": {
-    "includes": ["**", "!dist"]
+    "includes": ["**", "!dist", "!docs"]
   },
   "overrides": [
     {

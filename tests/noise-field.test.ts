@@ -6,12 +6,12 @@ import {
 } from "../src/noise-field/audio-analysis";
 import { fft } from "../src/noise-field/fft";
 import {
-  CURVE_SIZE,
-  MAX_FREQUENCY,
-  MIN_FREQUENCY,
   bandsToCurve,
+  CURVE_SIZE,
   curveFrequency,
   curveToBands,
+  MAX_FREQUENCY,
+  MIN_FREQUENCY,
   smoothCurveValues,
 } from "../src/noise-field/spectrum-curve";
 import { formatBytes, formatFrequency, formatTime } from "../src/shared/format";

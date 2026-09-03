@@ -1,5 +1,5 @@
-import type { ModulateSynth } from "./audio";
 import { resizeCanvas } from "../shared/canvas";
+import type { ModulateSynth } from "./audio";
 
 function canvasContext(
   canvas: HTMLCanvasElement,

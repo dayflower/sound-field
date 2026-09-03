@@ -4,3 +4,4 @@ docs
 .DS_Store
 *.local
 *.tsbuildinfo
+/.codex/environments/

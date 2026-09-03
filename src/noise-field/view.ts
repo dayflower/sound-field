@@ -1,8 +1,8 @@
+import { requiredCanvasContext, requiredElement } from "../shared/dom";
+import { translate, translateList } from "../shared/i18n";
+import { paintRange } from "../shared/range";
 import { BAND_FREQUENCIES } from "./spectrum-curve";
 import type { NoisePreset, PresetId } from "./types";
-import { translate, translateList } from "../shared/i18n";
-import { requiredCanvasContext, requiredElement } from "../shared/dom";
-import { paintRange } from "../shared/range";
 
 export interface NoiseView {
   powerButton: HTMLButtonElement;

@@ -1,3 +1,7 @@
+import { startClock } from "../shared/clock";
+import { formatBytes, formatTime } from "../shared/format";
+import { translate } from "../shared/i18n";
+import { paintRange } from "../shared/range";
 import { AudioEngine } from "../spectrum-field/audio-engine";
 import { renderSpectrum } from "../spectrum-field/spectrum-renderer";
 import { createInitialState } from "../spectrum-field/state";
@@ -8,10 +12,6 @@ import {
   updatePlaybackTime,
 } from "../spectrum-field/view";
 import { renderWaveform } from "../spectrum-field/waveform-renderer";
-import { startClock } from "../shared/clock";
-import { formatBytes, formatTime } from "../shared/format";
-import { translate } from "../shared/i18n";
-import { paintRange } from "../shared/range";
 
 const state = createInitialState();
 const view = createSpectrumView();

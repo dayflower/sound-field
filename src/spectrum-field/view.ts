@@ -1,6 +1,6 @@
+import { requiredCanvasContext, requiredElement } from "../shared/dom";
 import { formatTime } from "../shared/format";
 import { translate } from "../shared/i18n";
-import { requiredCanvasContext, requiredElement } from "../shared/dom";
 
 export interface SpectrumView {
   audio: HTMLAudioElement;
