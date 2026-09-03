@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" data-i18n-page="spectrum">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#11120f" />
+    <meta name="description" content="A real-time spectrum analyzer that processes local audio files entirely in your browser." />
+    <title>ANALYZE / FIELD — Real-time Spectrum Analyzer</title>
+    <link rel="stylesheet" href="/src/styles/spectrum-field.css" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <main>
+      <header class="site-header">
+        <a class="brand" href="index.html" aria-label="Sound Field Utilities ホーム" data-i18n="homeLabel" data-i18n-attr="aria-label"><span class="brand-mark">A/F</span><span>ANALYZE / FIELD</span></a>
+        <div class="header-side">
+          <a class="back-link" href="index.html">← SOUND / FIELD</a>
+          <p class="header-note">REALTIME AUDIO LAB<br />TOKYO — <span id="clock">00:00:00</span></p>
+          <!-- biome-ignore lint/a11y/noLabelWithoutControl: The nested select receives its accessible label when translations initialize. -->
+          <label class="language-picker"><select data-language-select></select></label>
+        </div>
+      </header>
+
+      <section class="intro">
+        <div>
+          <p class="eyebrow">GENERATIVE SOUND UTILITY — 001</p>
+          <h1 data-i18n="introTitle" data-i18n-html>音の輪郭を、<br /><em>観測する。</em></h1>
+        </div>
+        <p class="lead" data-i18n="introLead">手元の音声ファイルを読み込むと、音に含まれる周波数の強さをリアルタイムで可視化します。データはブラウザの外へ送信されません。</p>
+      </section>
+
+      <section id="dropZone" class="drop-zone" aria-label="音声ファイルの読み込み" data-i18n="dropZoneLabel" data-i18n-attr="aria-label">
+        <span class="drop-index">00 / INPUT SOURCE</span>
+        <div class="drop-copy"><b data-i18n="dropTitle">音声ファイルをここにドロップ</b><span data-i18n="dropFormat">MP3 / WAV / M4A / OGG / FLAC など、ブラウザが再生できる形式</span></div>
+        <button id="fileButton" class="file-button" type="button" data-i18n="fileButton">ファイルを選択 ＋</button>
+        <input id="fileInput" type="file" accept="audio/*,.flac" />
+      </section>
+
+      <section id="analyzer" class="analyzer" aria-label="リアルタイムスペクトラムアナライザー" data-i18n="analyzerLabel" data-i18n-attr="aria-label">
+        <div class="analyzer-top">
+          <div class="live-label"><span class="live-dot"></span><span id="liveStatus">WAITING FOR SOURCE</span></div>
+          <div class="meter-readout"><span>RANGE <b id="rangeReadout">−90 — −10 dB</b></span><span>PEAK <b id="peakReadout">−∞ dB</b></span></div>
+        </div>
+        <div class="spectrum-wrap">
+          <canvas id="spectrum" aria-label="周波数スペクトラム" data-i18n="spectrumLabel" data-i18n-attr="aria-label"></canvas>
+          <div class="empty-state"><b data-i18n="noSignal">NO SIGNAL</b><span data-i18n="loadPrompt">LOAD AN AUDIO FILE TO BEGIN</span></div>
+        </div>
+        <div class="transport">
+          <button id="playButton" class="play-button" type="button" aria-label="再生" data-i18n="playLabel" data-i18n-attr="aria-label" aria-pressed="false" disabled><span class="play-icon" aria-hidden="true"></span></button>
+          <div class="timeline">
+            <div class="track-row"><span id="trackName">NO FILE LOADED</span><span id="timeDisplay">00:00 / 00:00</span></div>
+            <div id="waveWrap" class="wave-wrap" role="slider" aria-label="再生位置" data-i18n="positionLabel" data-i18n-attr="aria-label" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><canvas id="waveform"></canvas></div>
+          </div>
+          <div class="transport-meta"><span>FORMAT</span><b id="formatShort">—</b><span id="sampleRateShort">— Hz</span></div>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <div>
+          <div class="section-title"><span>01</span><div><p>ANALYSIS SETTINGS</p><h2 data-i18n="analysisTitle">解析の精度と反応</h2></div></div>
+          <div class="control-list">
+            <div class="control-row"><span>FFT SIZE<small data-i18n="fftHint">周波数の解像度</small></span><select id="fftSize" aria-label="FFT SIZE"><option value="1024">1,024 — FAST</option><option value="2048">2,048</option><option value="4096" selected>4,096 — DETAIL</option><option value="8192">8,192</option><option value="16384">16,384 — FINE</option></select><output id="binReadout">— Hz</output></div>
+            <label class="control-row"><span>SMOOTHING<small data-i18n="smoothingHint">表示のなめらかさ</small></span><input id="smoothing" type="range" min="0" max="95" value="78" /><output id="smoothingValue">78%</output></label>
+            <label class="control-row"><span>FLOOR<small data-i18n="floorHint">表示する最小レベル</small></span><input id="floor" type="range" min="-120" max="-50" value="-90" /><output id="floorValue">−90 dB</output></label>
+            <label class="control-row"><span>VOLUME<small data-i18n="volumeHint">再生音量</small></span><input id="volume" type="range" min="0" max="100" value="70" /><output id="volumeValue">70%</output></label>
+          </div>
+        </div>
+        <div>
+          <div class="section-title"><span>02</span><div><p>SOURCE INFORMATION</p><h2 data-i18n="sourceTitle">読み込んだ音源</h2></div></div>
+          <div class="file-facts">
+            <div class="fact"><span>FILE NAME</span><b id="factName">—</b></div>
+            <div class="fact"><span>FILE SIZE</span><b id="factSize">—</b></div>
+            <div class="fact"><span>DURATION</span><b id="factDuration">—</b></div>
+            <div class="fact"><span>SAMPLE RATE</span><b id="factRate">—</b></div>
+            <div class="fact"><span>CHANNELS</span><b id="factChannels">—</b></div>
+            <div class="fact"><span>TYPE</span><b id="factType">—</b></div>
+          </div>
+          <p class="privacy-note" data-i18n="privacy">音源のデコード、再生、解析はすべてこの端末内で行われます。ファイルがアップロードされることはありません。</p>
+        </div>
+      </section>
+    </main>
+
+    <footer><span>ANALYZE / FIELD © 2026</span><span>ANALYZED LOCALLY IN YOUR BROWSER — NO DATA LEAVES THIS DEVICE</span></footer>
+    <!-- biome-ignore lint/a11y/useMediaCaption: Uploaded audio may be music or ambient sound and does not have a fixed caption track. -->
+    <audio id="audio" preload="metadata"></audio>
+
+    <script type="module" src="/src/pages/spectrum-field.ts"></script>
+  </body>
+</html>

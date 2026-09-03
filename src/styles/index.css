@@ -1,0 +1,240 @@
+@import "./base.css";
+
+main {
+  width: min(1440px, 100%);
+  min-height: calc(100vh - 70px);
+  margin: auto;
+  padding: 0 52px;
+}
+.hero {
+  min-height: 330px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 70px;
+  align-items: center;
+  border-bottom: 1px solid var(--ink);
+}
+.eyebrow {
+  margin: 0 0 20px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+h1 {
+  margin: 0;
+  font:
+    700 clamp(52px, 6.5vw, 96px) / 0.97 "Noto Sans JP",
+    sans-serif;
+  letter-spacing: -0.075em;
+}
+h1 em {
+  color: transparent;
+  -webkit-text-stroke: 1.3px var(--ink);
+  font-style: normal;
+}
+.lead {
+  max-width: 450px;
+  margin: 0;
+  color: #55564f;
+  font:
+    12px / 2 "Noto Sans JP",
+    sans-serif;
+}
+.utilities {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 46px 0 70px;
+}
+.utility {
+  position: relative;
+  display: flex;
+  min-height: 360px;
+  flex-direction: column;
+  padding: 30px;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    color 0.25s,
+    background 0.25s,
+    transform 0.25s;
+}
+.utility + .utility {
+  border-left: 0;
+}
+.utility:hover,
+.utility:focus-visible {
+  color: var(--paper);
+  background: var(--ink);
+  outline: none;
+  transform: translateY(-5px);
+}
+.utility-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+.utility-head span:last-child {
+  color: var(--muted);
+}
+.utility:hover .utility-head span:last-child {
+  color: var(--acid);
+}
+.utility-body {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+}
+.utility h2 {
+  margin: 0 0 15px;
+  font:
+    700 clamp(24px, 3.1vw, 46px) / 1 "Noto Sans JP",
+    sans-serif;
+  letter-spacing: -0.06em;
+  white-space: nowrap;
+}
+.utility p {
+  max-width: 430px;
+  margin: 0;
+  color: var(--muted);
+  font:
+    11px / 1.9 "Noto Sans JP",
+    sans-serif;
+}
+.utility:hover p {
+  color: #a9aaa2;
+}
+.arrow {
+  position: absolute;
+  top: 72px;
+  right: 30px;
+  display: grid;
+  width: 70px;
+  height: 70px;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-size: 25px;
+  transition:
+    color 0.25s,
+    background 0.25s,
+    transform 0.25s;
+}
+.utility:hover .arrow {
+  border-color: var(--acid);
+  color: var(--ink);
+  background: var(--acid);
+  transform: rotate(-35deg);
+}
+.signal {
+  position: absolute;
+  top: 135px;
+  right: 30px;
+  left: 30px;
+  height: 90px;
+  opacity: 0.2;
+}
+.signal svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.signal path,
+.signal line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.noise-signal path + path,
+.modulate-signal path + path {
+  opacity: 0.42;
+}
+.spectrum-bars {
+  display: flex;
+  height: 100%;
+  align-items: end;
+  gap: 5px;
+}
+.spectrum-bars i {
+  min-width: 2px;
+  flex: 1;
+  background: currentColor;
+  opacity: 0.75;
+}
+.utility:hover .signal {
+  color: var(--acid);
+  opacity: 0.45;
+}
+footer {
+  display: flex;
+  min-height: 70px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 max(52px, calc((100vw - 1440px) / 2 + 52px));
+  color: #82837b;
+  background: var(--ink);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 1050px) {
+  .utilities {
+    grid-template-columns: 1fr 1fr;
+  }
+  .utility:nth-child(3) {
+    border-top: 0;
+  }
+}
+@media (max-width: 800px) {
+  main {
+    padding: 0 24px;
+  }
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 55px 0;
+  }
+  .utilities {
+    grid-template-columns: 1fr;
+  }
+  .utility + .utility {
+    border-top: 0;
+    border-left: 1px solid var(--ink);
+  }
+  footer {
+    padding: 24px;
+    gap: 20px;
+  }
+}
+@media (max-width: 520px) {
+  .site-header {
+    height: 75px;
+  }
+  .header-note {
+    display: none;
+  }
+  h1 {
+    font-size: 50px;
+  }
+  .utility {
+    min-height: 320px;
+    padding: 22px;
+  }
+  .arrow {
+    right: 22px;
+  }
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root body * {
+    scroll-behavior: auto;
+    animation: none;
+    transition: none;
+  }
+}

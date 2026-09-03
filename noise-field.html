@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" data-i18n-page="noise">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#11120f" />
+    <meta name="description" content="A real-time noise generator for shaping sound in your browser." />
+    <title>NOISE / FIELD — Real-time Noise Generator</title>
+    <link rel="stylesheet" href="/src/styles/noise-field.css" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <main>
+      <header class="site-header">
+        <a class="brand" href="index.html" aria-label="Sound Field Utilities ホーム" data-i18n="homeLabel" data-i18n-attr="aria-label">
+          <span class="brand-mark">N/F</span>
+          <span>NOISE / FIELD</span>
+        </a>
+        <div class="header-actions"><a class="back-link" href="index.html">← SOUND / FIELD</a><p class="header-note">REALTIME AUDIO LAB<br />TOKYO — <span id="clock">00:00:00</span></p><!-- biome-ignore lint/a11y/noLabelWithoutControl: The nested select receives its accessible label when translations initialize. --><label class="language-picker"><select data-language-select></select></label></div>
+      </header>
+
+      <section class="hero">
+        <div>
+          <p class="eyebrow">GENERATIVE SOUND UTILITY — 002</p>
+          <h1 data-i18n="heroTitle" data-i18n-html>静けさを、<br /><em>設計する。</em></h1>
+          <p class="lead" data-i18n="heroLead">集中、休息、実験のための連続音。色を選ぶとスペクトルが現れる。そこから帯域ごとの強さを、あなたの空間に合わせて設計する。</p>
+        </div>
+        <div class="transport">
+          <button id="powerButton" class="power-button" type="button" aria-pressed="false">
+            <span class="power-icon" aria-hidden="true"></span>
+            <span class="power-copy"><b id="powerLabel" data-i18n="start">再生する</b><small id="powerSub">CLICK TO START</small></span>
+          </button>
+          <div class="now-playing">
+            <span class="live-dot"></span>
+            <span id="statusText">STANDBY</span>
+            <span id="elapsed">00:00</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="visual-panel" aria-label="リアルタイムスペクトラム" data-i18n="visualLabel" data-i18n-attr="aria-label">
+        <div class="panel-label"><span>LIVE SPECTRUM</span><span>20 Hz</span><span>20 kHz</span></div>
+        <canvas id="spectrum" aria-label="周波数スペクトラムの可視化" data-i18n="spectrumLabel" data-i18n-attr="aria-label"></canvas>
+      </section>
+
+      <section class="workspace">
+        <div class="presets-section">
+          <div class="section-title">
+            <span>01</span>
+            <div><p>NOISE COLOR</p><h2 data-i18n="colorTitle">音の色を選ぶ</h2></div>
+          </div>
+          <div id="presetGrid" class="preset-grid" role="radiogroup" aria-label="ノイズの種類" data-i18n="presetLabel" data-i18n-attr="aria-label"></div>
+          <div class="source-analyzer">
+            <div class="source-analyzer-head">
+              <div class="source-analyzer-copy"><b data-i18n="importTitle">音源の音色を取り込む</b><small data-i18n="importDescription">平均または中央値のスペクトルを解析し、CUSTOMカーブへ反映します。</small></div>
+              <div class="source-analyzer-actions">
+                <label class="analysis-mode"><span>ANALYSIS</span><select id="analysisMode" aria-label="スペクトルの集計方法" data-i18n="analysisLabel" data-i18n-attr="aria-label"><option value="mean" data-i18n="mean">平均 / MEAN</option><option value="median" data-i18n="median">中央値 / MEDIAN</option></select></label>
+                <button id="analyzeFileButton" class="analyze-button" type="button" data-i18n="chooseFile">音声ファイルを選択 ＋</button>
+              </div>
+              <input id="sourceFile" type="file" accept="audio/*,.flac" />
+            </div>
+            <p id="sourceStatus" class="source-status" role="status" aria-live="polite">NO SOURCE ANALYZED</p>
+          </div>
+        </div>
+
+        <div class="controls-section">
+          <div class="section-title">
+            <span>02</span>
+            <div><p>DESIGN THE SPECTRUM</p><h2 data-i18n="designTitle">周波数ごとの強さ</h2></div>
+            <button id="resetButton" class="text-button" type="button">RESET</button>
+          </div>
+
+          <div class="range-controls">
+            <label class="control-row">
+              <span><b>LOW CUT</b><small data-i18n="lowCutHint">低域をカット</small></span>
+              <input id="lowCut" type="range" min="20" max="1000" value="20" step="1" />
+              <output id="lowCutValue">20 Hz</output>
+            </label>
+            <label class="control-row">
+              <span><b>HIGH CUT</b><small data-i18n="highCutHint">高域をカット</small></span>
+              <input id="highCut" type="range" min="1000" max="20000" value="20000" step="10" />
+              <output id="highCutValue">20.0 kHz</output>
+            </label>
+          </div>
+
+          <div class="editor-switch" role="tablist" aria-label="スペクトラム編集モード" data-i18n="editorLabel" data-i18n-attr="aria-label">
+            <button id="curveTab" class="editor-tab active" type="button" role="tab" aria-selected="true" aria-controls="curveEditor" data-i18n="curveTab">CURVE / 詳細</button>
+            <button id="bandTab" class="editor-tab" type="button" role="tab" aria-selected="false" aria-controls="bandEditor" data-i18n="bandTab">10 BAND / 簡易</button>
+          </div>
+          <div id="curveEditor" class="editor-panel curve-editor" role="tabpanel" aria-labelledby="curveTab">
+            <div class="curve-toolbar"><span>20 Hz — 20 kHz / −24 — +12 dB</span><div class="curve-actions"><button id="smoothCurveButton" class="curve-action" type="button">SMOOTH</button><button id="flattenCurveButton" class="curve-action" type="button">FLATTEN</button></div></div>
+            <div id="curveCanvasWrap" class="curve-canvas-wrap"><canvas id="curveCanvas" aria-label="スペクトラムカーブ編集" data-i18n="curveLabel" data-i18n-attr="aria-label"></canvas></div>
+            <p class="curve-help" data-i18n="curveHelp">カーブをドラッグして音色を編集できます。10バンド表示はこのカーブから自動計算されます。</p>
+          </div>
+          <div id="bandEditor" class="editor-panel band-editor" role="tabpanel" aria-labelledby="bandTab" hidden>
+            <p class="spectrum-note" data-i18n="bandHelp">10本のフェーダーを動かすと、周波数間を補間したカーブへ反映されます。</p>
+            <div class="eq-header"><span>10 BAND SPECTRUM</span><span>−24</span><span>0 dB</span><span>+12</span></div>
+            <div id="eqControls" class="eq-controls"></div>
+          </div>
+          <div class="data-panel">
+            <div class="data-panel-head"><span>SPECTRUM DATA / JSON</span><button id="copyJsonButton" class="copy-button" type="button">COPY JSON</button></div>
+            <textarea id="spectrumJson" readonly spellcheck="false" aria-label="スペクトラム設定のJSON" data-i18n="dataLabel" data-i18n-attr="aria-label"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="master-section">
+        <div>
+          <p>MASTER OUTPUT</p>
+          <h2 data-i18n="masterTitle">出力レベル</h2>
+        </div>
+        <label class="master-control">
+          <span class="speaker" aria-hidden="true">◖</span>
+          <input id="volume" type="range" min="0" max="100" value="38" />
+          <output id="volumeValue">38%</output>
+        </label>
+        <p class="safety-note" data-i18n="safety" data-i18n-html>聴覚保護のため、小さな音量から始めてください。<br />音量を上げすぎないようご注意ください。</p>
+      </section>
+    </main>
+
+    <footer><span>NOISE / FIELD © 2026</span><span>GENERATED LOCALLY IN YOUR BROWSER — NO DATA LEAVES THIS DEVICE</span></footer>
+    <script type="module" src="/src/pages/noise-field.ts"></script>
+  </body>
+</html>

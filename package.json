@@ -1,0 +1,24 @@
+{
+  "name": "sound-field",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run check:types && vite build",
+    "check:types": "tsc --noEmit",
+    "lint": "biome lint .",
+    "format:check": "biome format .",
+    "test": "vitest run",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "tone": "^15.1.22"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.11",
+    "@types/node": "^26.4.1",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.3",
+    "vitest": "^4.1.11"
+  }
+}

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" data-i18n-page="index">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#11120f" />
+    <meta name="description" content="Generate and observe sound with browser-based audio utilities." />
+    <title>SOUND / FIELD — Generative Sound Utilities</title>
+    <link rel="stylesheet" href="/src/styles/index.css" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <main>
+      <header class="site-header">
+        <div class="brand"><span class="brand-mark">S/F</span><span>SOUND / FIELD</span></div>
+        <div class="header-actions"><p class="header-note">GENERATIVE SOUND UTILITIES<br />TOKYO — <span id="clock">00:00:00</span></p><!-- biome-ignore lint/a11y/noLabelWithoutControl: The nested select receives its accessible label when translations initialize. --><label class="language-picker"><select data-language-select></select></label></div>
+      </header>
+
+      <section class="hero">
+        <div><p class="eyebrow">BROWSER-BASED AUDIO LAB — 2026</p><h1 data-i18n="heroTitle" data-i18n-html>音をつくる。<br /><em>音をみる。</em></h1></div>
+        <p class="lead" data-i18n="heroLead">音に触れる、3つの入口。連続音を整える。手元の音源を観測する。変調によって音を形づくる。すべては、このブラウザの中で。</p>
+      </section>
+
+      <nav class="utilities" aria-label="サウンドユーティリティ" data-i18n="utilitiesLabel" data-i18n-attr="aria-label">
+        <a class="utility" href="spectrum-field.html">
+          <div class="utility-head"><span>UTILITY — 001</span><span>ANALYZE</span></div>
+          <span class="arrow" aria-hidden="true">→</span>
+          <div class="signal spectrum-bars" aria-hidden="true"><i style="height:28%"></i><i style="height:46%"></i><i style="height:72%"></i><i style="height:88%"></i><i style="height:54%"></i><i style="height:37%"></i><i style="height:68%"></i><i style="height:44%"></i><i style="height:79%"></i><i style="height:34%"></i><i style="height:61%"></i><i style="height:25%"></i><i style="height:48%"></i><i style="height:20%"></i><i style="height:35%"></i><i style="height:16%"></i></div>
+          <div class="utility-body"><h2>ANALYZE / FIELD</h2><p data-i18n="spectrumDescription">音声ファイルを再生しながら、含まれる周波数とレベルの変化をリアルタイムで観測する。</p></div>
+        </a>
+        <a class="utility" href="noise-field.html">
+          <div class="utility-head"><span>UTILITY — 002</span><span>GENERATE</span></div>
+          <span class="arrow" aria-hidden="true">→</span>
+          <div class="signal noise-signal" aria-hidden="true"><svg viewBox="0 0 600 90" preserveAspectRatio="none"><path d="M0 45 L7 20 L14 67 L21 31 L28 51 L35 14 L42 73 L49 39 L56 58 L63 23 L70 47 L77 12 L84 69 L91 35 L98 54 L105 26 L112 77 L119 42 L126 17 L133 60 L140 33 L147 50 L154 9 L161 72 L168 30 L175 56 L182 40 L189 66 L196 18 L203 48 L210 27 L217 76 L224 36 L231 62 L238 22 L245 45 L252 13 L259 70 L266 41 L273 53 L280 28 L287 65 L294 16 L301 57 L308 34 L315 75 L322 25 L329 48 L336 11 L343 63 L350 38 L357 55 L364 19 L371 72 L378 32 L385 60 L392 43 L399 68 L406 15 L413 46 L420 24 L427 78 L434 37 L441 52 L448 10 L455 64 L462 29 L469 59 L476 35 L483 74 L490 21 L497 50 L504 14 L511 67 L518 40 L525 56 L532 26 L539 71 L546 31 L553 47 L560 18 L567 76 L574 36 L581 61 L588 23 L595 49 L600 40" /><path d="M0 50 L12 35 L24 60 L36 26 L48 53 L60 37 L72 64 L84 30 L96 48 L108 19 L120 69 L132 42 L144 58 L156 33 L168 62 L180 25 L192 51 L204 38 L216 70 L228 29 L240 54 L252 20 L264 65 L276 43 L288 57 L300 31 L312 62 L324 27 L336 50 L348 36 L360 68 L372 24 L384 55 L396 34 L408 61 L420 17 L432 67 L444 40 L456 52 L468 28 L480 63 L492 35 L504 56 L516 22 L528 71 L540 38 L552 49 L564 31 L576 66 L588 27 L600 54" /></svg></div>
+          <div class="utility-body"><h2>NOISE / FIELD</h2><p data-i18n="noiseDescription">ホワイト、ピンク、ブラウン。周波数ごとの強さを整え、自分の空間に合う連続音を設計する。</p></div>
+        </a>
+        <a class="utility" href="modulate-field.html">
+          <div class="utility-head"><span>UTILITY — 003</span><span>SYNTHESIZE</span></div>
+          <span class="arrow" aria-hidden="true">→</span>
+          <div class="signal modulate-signal" aria-hidden="true"><svg viewBox="0 0 600 90" preserveAspectRatio="none"><path d="M0 45 C13 8 37 8 50 45 S87 82 100 45 S137 8 150 45 S187 82 200 45 S237 8 250 45 S287 82 300 45 S337 8 350 45 S387 82 400 45 S437 8 450 45 S487 82 500 45 S537 8 550 45 S587 82 600 45" /><path d="M0 45 C7 27 18 27 25 45 S43 63 50 45 S68 27 75 45 S93 63 100 45 S118 27 125 45 S143 63 150 45 S168 27 175 45 S193 63 200 45 S218 27 225 45 S243 63 250 45 S268 27 275 45 S293 63 300 45 S318 27 325 45 S343 63 350 45 S368 27 375 45 S393 63 400 45 S418 27 425 45 S443 63 450 45 S468 27 475 45 S493 63 500 45 S518 27 525 45 S543 63 550 45 S568 27 575 45 S593 63 600 45" /></svg></div>
+          <div class="utility-body"><h2>MODULATE / FIELD</h2><p data-i18n="modulateDescription">4つのオペレーターと8種類のアルゴリズムで、ブラウザの中に自分だけのFMシンセサイザーを組み立てる。</p></div>
+        </a>
+      </nav>
+    </main>
+    <footer><span>SOUND / FIELD © 2026</span><span>GENERATED &amp; ANALYZED LOCALLY — NO DATA LEAVES THIS DEVICE</span></footer>
+    <script type="module" src="/src/pages/index.ts"></script>
+  </body>
+</html>

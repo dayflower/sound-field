@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Noto+Sans+JP:wght@400;500;700&display=swap");
+
+:root {
+  --ink: #141510;
+  --paper: #e7e4dc;
+  --acid: #d8ff35;
+  --muted: #6d6e67;
+  --line: rgba(20, 21, 16, 0.24);
+  --mono: "DM Mono", "Noto Sans JP", monospace;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  min-height: 100%;
+}
+body {
+  margin: 0;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button {
+  color: inherit;
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+}
+
+.site-header {
+  height: 94px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid var(--ink);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: inherit;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+.brand-mark {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  color: var(--acid);
+  background: var(--ink);
+  font-size: 12px;
+}
+.header-actions,
+.header-side {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.header-note {
+  color: #55564f;
+  font-size: 9px;
+  line-height: 1.7;
+  letter-spacing: 0.1em;
+  text-align: right;
+}
+.back-link {
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--ink);
+  color: inherit;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+}
+.language-picker select {
+  min-width: 82px;
+  padding: 5px 0;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  color: inherit;
+  background: transparent;
+  font: 9px var(--mono);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.language-picker select:hover,
+.language-picker select:focus-visible {
+  color: #657b00;
+  outline: none;
+}
+
+input[type="range"] {
+  --fill: 50%;
+  width: 100%;
+  height: 1px;
+  appearance: none;
+  background: linear-gradient(90deg, var(--ink) var(--fill), #aaa var(--fill));
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border: 3px solid var(--paper);
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink);
+}
