@@ -5,8 +5,10 @@ export type RoutingTarget = OperatorId | "output";
 
 export interface EnvelopeSettings {
   attack: number;
-  decay: number;
-  sustain: number;
+  segment1Time: number;
+  segment1Level: number;
+  segment2Time: number;
+  segment2Level: number;
   release: number;
 }
 

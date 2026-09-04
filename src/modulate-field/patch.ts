@@ -23,7 +23,14 @@ export const defaultPatch: SynthPatch = {
       level: 0.42,
       modulationIndex: 1.2,
       feedback: 0,
-      envelope: { attack: 0, decay: 0.85, sustain: 0.08, release: 0.4 },
+      envelope: {
+        attack: 0,
+        segment1Time: 0.28,
+        segment1Level: 0.36,
+        segment2Time: 0.57,
+        segment2Level: 0.08,
+        release: 0.4,
+      },
     },
     {
       enabled: true,
@@ -35,7 +42,14 @@ export const defaultPatch: SynthPatch = {
       level: 0.95,
       modulationIndex: 0,
       feedback: 0,
-      envelope: { attack: 0.003, decay: 1.8, sustain: 0.32, release: 1 },
+      envelope: {
+        attack: 0.003,
+        segment1Time: 0.42,
+        segment1Level: 0.62,
+        segment2Time: 1.38,
+        segment2Level: 0.32,
+        release: 1,
+      },
     },
     {
       enabled: true,
@@ -47,7 +61,14 @@ export const defaultPatch: SynthPatch = {
       level: 0.28,
       modulationIndex: 1.45,
       feedback: 0,
-      envelope: { attack: 0, decay: 0.18, sustain: 0, release: 0.12 },
+      envelope: {
+        attack: 0,
+        segment1Time: 0.06,
+        segment1Level: 0.18,
+        segment2Time: 0.12,
+        segment2Level: 0,
+        release: 0.12,
+      },
     },
     {
       enabled: true,
@@ -59,7 +80,14 @@ export const defaultPatch: SynthPatch = {
       level: 0.32,
       modulationIndex: 0,
       feedback: 0,
-      envelope: { attack: 0.002, decay: 0.65, sustain: 0.08, release: 0.55 },
+      envelope: {
+        attack: 0.002,
+        segment1Time: 0.14,
+        segment1Level: 0.26,
+        segment2Time: 0.51,
+        segment2Level: 0.08,
+        release: 0.55,
+      },
     },
   ],
 };

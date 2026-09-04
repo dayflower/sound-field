@@ -46,11 +46,19 @@ const mainSliders: SliderDefinition[] = [
 ];
 
 const envelopeSliders = [
-  { key: "attack", label: "A", min: 0, max: 2, step: 0.001, suffix: " s" },
-  { key: "decay", label: "D", min: 0.01, max: 3, step: 0.01, suffix: " s" },
-  { key: "sustain", label: "S", min: 0, max: 1, step: 0.01, suffix: "" },
-  { key: "release", label: "R", min: 0, max: 5, step: 0.01, suffix: " s" },
-] as const;
+  { key: "attack", min: 0, max: 2, step: 0.001, suffix: " s" },
+  { key: "segment1Time", min: 0, max: 3, step: 0.01, suffix: " s" },
+  { key: "segment1Level", min: 0, max: 1, step: 0.01, suffix: "" },
+  { key: "segment2Time", min: 0, max: 3, step: 0.01, suffix: " s" },
+  { key: "segment2Level", min: 0, max: 1, step: 0.01, suffix: "" },
+  { key: "release", min: 0, max: 5, step: 0.01, suffix: " s" },
+] as const satisfies readonly {
+  key: keyof EnvelopeSettings;
+  min: number;
+  max: number;
+  step: number;
+  suffix: string;
+}[];
 
 function formatNumber(value: number): string {
   if (Math.abs(value) >= 100) return value.toFixed(0);
@@ -78,7 +86,9 @@ function slider(
       ? "master"
       : scope === "operator"
         ? `controls.${key}`
-        : undefined;
+        : scope === "envelope"
+          ? `controls.${key}`
+          : undefined;
   const accessibleLabel =
     scope === "master"
       ? displayLabel
@@ -112,27 +122,35 @@ export function envelopeGraphMarkup(
   const right = 290;
   const baseline = 76;
   const peak = 9;
-  const sustainWidth = 72;
+  const sustainWidth = 46;
   const timedWidth = right - left - sustainWidth;
   const durationWeight = (value: number, maximum: number) =>
     Math.log1p(value * 10) / Math.log1p(maximum * 10);
   const attackWeight = durationWeight(envelope.attack, 2);
-  const decayWeight = durationWeight(envelope.decay, 3);
+  const segment1Weight = durationWeight(envelope.segment1Time, 3);
+  const segment2Weight = durationWeight(envelope.segment2Time, 3);
   const releaseWeight = durationWeight(envelope.release, 5);
-  const totalWeight = attackWeight + decayWeight + releaseWeight;
+  const totalWeight =
+    attackWeight + segment1Weight + segment2Weight + releaseWeight;
   const attackWidth =
     totalWeight === 0 ? 0 : (timedWidth * attackWeight) / totalWeight;
-  const decayWidth =
-    totalWeight === 0 ? 0 : (timedWidth * decayWeight) / totalWeight;
+  const segment1Width =
+    totalWeight === 0 ? 0 : (timedWidth * segment1Weight) / totalWeight;
+  const segment2Width =
+    totalWeight === 0 ? 0 : (timedWidth * segment2Weight) / totalWeight;
   const releaseWidth =
     totalWeight === 0 ? 0 : (timedWidth * releaseWeight) / totalWeight;
   const attackEnd = left + attackWidth;
-  const decayEnd = attackEnd + decayWidth;
-  const sustainEnd = decayEnd + sustainWidth;
+  const segment1End = attackEnd + segment1Width;
+  const segment2End = segment1End + segment2Width;
+  const sustainEnd = segment2End + sustainWidth;
   const graphEnd = sustainEnd + releaseWidth;
-  const sustainY = Math.round(baseline - envelope.sustain * (baseline - peak));
+  const levelY = (level: number) =>
+    Math.round(baseline - level * (baseline - peak));
+  const segment1Y = levelY(envelope.segment1Level);
+  const segment2Y = levelY(envelope.segment2Level);
   const point = (value: number) => value.toFixed(1);
-  const linePath = `M ${left} ${baseline} L ${point(attackEnd)} ${peak} L ${point(decayEnd)} ${sustainY} L ${point(sustainEnd)} ${sustainY} L ${point(graphEnd)} ${baseline}`;
+  const linePath = `M ${left} ${baseline} L ${point(attackEnd)} ${peak} L ${point(segment1End)} ${segment1Y} L ${point(segment2End)} ${segment2Y} L ${point(sustainEnd)} ${segment2Y} L ${point(graphEnd)} ${baseline}`;
   const areaPath = `${linePath} L ${point(graphEnd)} ${baseline} L ${left} ${baseline} Z`;
 
   return `
@@ -140,20 +158,23 @@ export function envelopeGraphMarkup(
       <path class="envelope-area" d="${areaPath}" />
       <g class="envelope-guides">
         <line x1="${point(attackEnd)}" y1="${peak}" x2="${point(attackEnd)}" y2="${baseline}" />
-        <line x1="${point(decayEnd)}" y1="${sustainY}" x2="${point(decayEnd)}" y2="${baseline}" />
-        <line x1="${point(sustainEnd)}" y1="${sustainY}" x2="${point(sustainEnd)}" y2="${baseline}" />
+        <line x1="${point(segment1End)}" y1="${segment1Y}" x2="${point(segment1End)}" y2="${baseline}" />
+        <line x1="${point(segment2End)}" y1="${segment2Y}" x2="${point(segment2End)}" y2="${baseline}" />
+        <line x1="${point(sustainEnd)}" y1="${segment2Y}" x2="${point(sustainEnd)}" y2="${baseline}" />
       </g>
       <path class="envelope-line" d="${linePath}" />
-      <line class="envelope-sustain-line" x1="${point(decayEnd)}" y1="${sustainY}" x2="${point(sustainEnd)}" y2="${sustainY}" />
+      <line class="envelope-sustain-line" x1="${point(segment2End)}" y1="${segment2Y}" x2="${point(sustainEnd)}" y2="${segment2Y}" />
       <g class="envelope-points">
         <circle cx="${point(attackEnd)}" cy="${peak}" r="2.5" />
-        <circle cx="${point(decayEnd)}" cy="${sustainY}" r="2.5" />
-        <circle cx="${point(sustainEnd)}" cy="${sustainY}" r="2.5" />
+        <circle cx="${point(segment1End)}" cy="${segment1Y}" r="2.5" />
+        <circle cx="${point(segment2End)}" cy="${segment2Y}" r="2.5" />
+        <circle cx="${point(sustainEnd)}" cy="${segment2Y}" r="2.5" />
       </g>
       <g class="envelope-labels">
         <text x="${point((left + attackEnd) / 2)}" y="91">A</text>
-        <text x="${point((attackEnd + decayEnd) / 2)}" y="91">D</text>
-        <text x="${point((decayEnd + sustainEnd) / 2)}" y="91">S</text>
+        <text x="${point((attackEnd + segment1End) / 2)}" y="91">S1</text>
+        <text x="${point((segment1End + segment2End) / 2)}" y="91">S2</text>
+        <text x="${point((segment2End + sustainEnd) / 2)}" y="91">S</text>
         <text x="${point((sustainEnd + graphEnd) / 2)}" y="91">R</text>
       </g>
     </svg>`;
@@ -180,11 +201,11 @@ function operatorPanel(operator: OperatorSettings, index: number): string {
     })
     .join("");
   const envelope = envelopeSliders
-    .map(({ key, label, min, max, step, suffix }) =>
+    .map(({ key, min, max, step, suffix }) =>
       slider(
         index,
         key,
-        label,
+        t(`controls.${key}`),
         operator.envelope[key],
         min,
         max,
@@ -243,7 +264,7 @@ function operatorPanel(operator: OperatorSettings, index: number): string {
       <div class="control-block frequency-controls">${frequencySliders}</div>
 
       <div class="control-block envelope-block">
-        <div class="block-heading"><span data-i18n="amplitudeEnvelope">${t("amplitudeEnvelope")}</span><span>ADSR</span></div>
+        <div class="block-heading"><span data-i18n="amplitudeEnvelope">${t("amplitudeEnvelope")}</span><span>A · S1 · S2 · S · R</span></div>
         ${envelope}
         <div class="envelope-graph" data-envelope-graph="${index}">${envelopeGraphMarkup(operator.envelope, index)}</div>
       </div>

@@ -1,6 +1,11 @@
 import * as Tone from "tone";
 import { operatorIndex } from "./routing";
-import type { OperatorSettings, SynthPatch, Waveform } from "./types";
+import type {
+  EnvelopeSettings,
+  OperatorSettings,
+  SynthPatch,
+  Waveform,
+} from "./types";
 
 const MAX_VOICES = 8;
 const FEEDBACK_DELAY_SECONDS = 0.001;
@@ -28,10 +33,11 @@ class OperatorVoice {
   readonly oscillator: Tone.Oscillator;
   readonly oscillatorGain: Tone.Gain;
   readonly noiseGain: Tone.Gain;
-  readonly envelope: Tone.AmplitudeEnvelope;
+  readonly envelope: Tone.Gain;
   readonly output: Tone.Gain;
   readonly feedbackDelay: Tone.Delay;
   readonly feedbackGain: Tone.Gain;
+  private envelopeSettings: EnvelopeSettings;
 
   constructor(
     settings: OperatorSettings,
@@ -47,7 +53,8 @@ class OperatorVoice {
     });
     this.oscillatorGain = new Tone.Gain(settings.waveform === "white" ? 0 : 1);
     this.noiseGain = new Tone.Gain(settings.waveform === "white" ? 1 : 0);
-    this.envelope = new Tone.AmplitudeEnvelope(settings.envelope);
+    this.envelope = new Tone.Gain(0);
+    this.envelopeSettings = settings.envelope;
     this.output = new Tone.Gain(settings.enabled ? settings.level : 0);
     this.feedbackDelay = new Tone.Delay(FEEDBACK_DELAY_SECONDS, 0.02);
     this.feedbackGain = new Tone.Gain(noteFrequency * settings.feedback);
@@ -96,15 +103,8 @@ class OperatorVoice {
       startTime,
     );
 
-    this.envelope.attack = settings.envelope.attack;
-    this.envelope.decay = settings.envelope.decay;
-    this.envelope.sustain = settings.envelope.sustain;
-    this.envelope.cancel(startTime);
-    const release = settings.envelope.release;
-    this.envelope.release = 0;
-    this.envelope.triggerRelease(startTime);
-    this.envelope.release = release;
-    this.envelope.triggerAttack(startTime);
+    this.envelopeSettings = settings.envelope;
+    this.scheduleAttack(startTime);
   }
 
   update(settings: OperatorSettings, noteFrequency: number): void {
@@ -122,18 +122,15 @@ class OperatorVoice {
     );
     this.output.gain.rampTo(settings.enabled ? settings.level : 0, 0.02);
     this.feedbackGain.gain.rampTo(noteFrequency * settings.feedback, 0.02);
-    this.envelope.attack = settings.envelope.attack;
-    this.envelope.decay = settings.envelope.decay;
-    this.envelope.sustain = settings.envelope.sustain;
-    this.envelope.release = settings.envelope.release;
+    this.envelopeSettings = settings.envelope;
   }
 
-  triggerAttack(time?: Tone.Unit.Time): void {
-    this.envelope.triggerAttack(time);
-  }
-
-  triggerRelease(time?: Tone.Unit.Time): void {
-    this.envelope.triggerRelease(time);
+  triggerRelease(): void {
+    const startTime = Tone.now();
+    const { release } = this.envelopeSettings;
+    this.envelope.gain.cancelAndHoldAtTime(startTime);
+    if (release === 0) this.envelope.gain.setValueAtTime(0, startTime);
+    else this.envelope.gain.linearRampToValueAtTime(0, startTime + release);
   }
 
   dispose(): void {
@@ -144,6 +141,24 @@ class OperatorVoice {
     this.output.dispose();
     this.feedbackDelay.dispose();
     this.feedbackGain.dispose();
+  }
+
+  private scheduleAttack(startTime: number): void {
+    const { attack, segment1Time, segment1Level, segment2Time, segment2Level } =
+      this.envelopeSettings;
+    const gain = this.envelope.gain;
+    gain.cancelScheduledValues(startTime);
+    gain.setValueAtTime(0, startTime);
+    let currentTime = startTime;
+    const rampTo = (level: number, duration: number): void => {
+      currentTime += duration;
+      if (duration === 0) gain.setValueAtTime(level, currentTime);
+      else gain.linearRampToValueAtTime(level, currentTime);
+    };
+
+    rampTo(1, attack);
+    rampTo(segment1Level, segment1Time);
+    rampTo(segment2Level, segment2Time);
   }
 }
 

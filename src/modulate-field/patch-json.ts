@@ -79,10 +79,32 @@ function booleanAt(value: unknown, path: string): boolean {
 
 function parseEnvelope(value: unknown, path: string): EnvelopeSettings {
   const envelope = objectAt(value, path);
+  if (envelope.segment1Time === undefined) {
+    return {
+      attack: numberAt(envelope.attack, `${path}.attack`, 0, 2),
+      segment1Time: numberAt(envelope.decay, `${path}.decay`, 0.01, 3),
+      segment1Level: numberAt(envelope.sustain, `${path}.sustain`, 0, 1),
+      segment2Time: 0,
+      segment2Level: numberAt(envelope.sustain, `${path}.sustain`, 0, 1),
+      release: numberAt(envelope.release, `${path}.release`, 0, 5),
+    };
+  }
   return {
     attack: numberAt(envelope.attack, `${path}.attack`, 0, 2),
-    decay: numberAt(envelope.decay, `${path}.decay`, 0.01, 3),
-    sustain: numberAt(envelope.sustain, `${path}.sustain`, 0, 1),
+    segment1Time: numberAt(envelope.segment1Time, `${path}.segment1Time`, 0, 3),
+    segment1Level: numberAt(
+      envelope.segment1Level,
+      `${path}.segment1Level`,
+      0,
+      1,
+    ),
+    segment2Time: numberAt(envelope.segment2Time, `${path}.segment2Time`, 0, 3),
+    segment2Level: numberAt(
+      envelope.segment2Level,
+      `${path}.segment2Level`,
+      0,
+      1,
+    ),
     release: numberAt(envelope.release, `${path}.release`, 0, 5),
   };
 }
