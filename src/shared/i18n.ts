@@ -154,7 +154,7 @@ const messages: MessageCatalog = {
       octaveDown: "Octave down",
       octaveUp: "Octave up",
       keyboardHint:
-        "PC KEYS <kbd>A</kbd>–<kbd>K</kbd> · Click or touch to play",
+        "PC KEYS <kbd>A</kbd>–<kbd>K</kbd> · <kbd>1</kbd>–<kbd>4</kbd> toggle operators · Click or touch to play",
       connectionPresets: "CONNECTION PRESETS",
       routing: "ROUTING",
       routingDescription:
@@ -330,7 +330,7 @@ const messages: MessageCatalog = {
       octaveDown: "オクターブを下げる",
       octaveUp: "オクターブを上げる",
       keyboardHint:
-        "PCキー <kbd>A</kbd>–<kbd>K</kbd> ・クリックまたはタッチで演奏",
+        "PCキー <kbd>A</kbd>–<kbd>K</kbd> ・<kbd>1</kbd>–<kbd>4</kbd> でオペレーターを切替・クリックまたはタッチで演奏",
       connectionPresets: "接続プリセット",
       routing: "ルーティング",
       routingDescription:

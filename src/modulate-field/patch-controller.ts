@@ -11,6 +11,7 @@ import { envelopeGraphMarkup, formatNumber, routingMarkup } from "./ui";
 export interface PatchController {
   replace(nextPatch: SynthPatch): void;
   update(mutator: (patch: SynthPatch) => void): void;
+  toggleOperator(index: number): void;
   sync(): void;
   dispose(): void;
 }
@@ -111,6 +112,12 @@ export function createPatchController(
     sync();
     onPatchChanged(patch);
   };
+  const toggleOperator = (index: number): void => {
+    update((currentPatch) => {
+      const operator = currentPatch.operators[index];
+      if (operator) operator.enabled = !operator.enabled;
+    });
+  };
   const onInput = (event: Event): void => {
     const input = event.target;
     if (
@@ -155,11 +162,7 @@ export function createPatchController(
       "[data-operator-toggle]",
     );
     if (operatorToggle) {
-      update((currentPatch) => {
-        const operator =
-          currentPatch.operators[Number(operatorToggle.dataset.operatorToggle)];
-        if (operator) operator.enabled = !operator.enabled;
-      });
+      toggleOperator(Number(operatorToggle.dataset.operatorToggle));
       return;
     }
 
@@ -195,6 +198,7 @@ export function createPatchController(
       update((currentPatch) => Object.assign(currentPatch, nextPatch));
     },
     update,
+    toggleOperator,
     sync,
     dispose: (): void => {
       root.removeEventListener("input", onInput);

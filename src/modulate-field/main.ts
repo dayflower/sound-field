@@ -40,6 +40,27 @@ const keyboardController = createKeyboardController({
     synth.noteOff(note);
   },
 });
+const onOperatorShortcut = (event: KeyboardEvent): void => {
+  if (event.repeat || event.metaKey || event.ctrlKey || event.altKey) return;
+  if (root.querySelector("dialog[open]")) return;
+  if (
+    event.target instanceof HTMLInputElement ||
+    event.target instanceof HTMLSelectElement ||
+    event.target instanceof HTMLTextAreaElement ||
+    (event.target instanceof HTMLElement && event.target.isContentEditable)
+  )
+    return;
+  const operatorIndex = Number(event.key) - 1;
+  if (
+    !Number.isInteger(operatorIndex) ||
+    operatorIndex < 0 ||
+    operatorIndex > 3
+  )
+    return;
+  event.preventDefault();
+  patchController.toggleOperator(operatorIndex);
+};
+window.addEventListener("keydown", onOperatorShortcut);
 const patchDialog = createPatchDialog(
   root,
   () => patch,
@@ -63,6 +84,7 @@ const dispose = (): void => {
   if (disposed) return;
   disposed = true;
   document.removeEventListener("languagechange", onLanguageChange);
+  window.removeEventListener("keydown", onOperatorShortcut);
   keyboardController.dispose();
   pendingNotes.clear();
   patchDialog.dispose();
