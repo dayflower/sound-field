@@ -20,8 +20,7 @@ export const defaultPatch: SynthPatch = {
       ratio: 2,
       fixedHz: 440,
       detune: 0,
-      level: 0.42,
-      modulationIndex: 1.2,
+      level: 0.58,
       feedback: 0,
       envelope: {
         attack: 0,
@@ -39,8 +38,7 @@ export const defaultPatch: SynthPatch = {
       ratio: 1,
       fixedHz: 440,
       detune: 0,
-      level: 0.95,
-      modulationIndex: 0,
+      level: 1,
       feedback: 0,
       envelope: {
         attack: 0.003,
@@ -58,8 +56,7 @@ export const defaultPatch: SynthPatch = {
       ratio: 3,
       fixedHz: 440,
       detune: 0,
-      level: 0.28,
-      modulationIndex: 1.45,
+      level: 0.52,
       feedback: 0,
       envelope: {
         attack: 0,
@@ -77,8 +74,7 @@ export const defaultPatch: SynthPatch = {
       ratio: 1,
       fixedHz: 440,
       detune: 3,
-      level: 0.32,
-      modulationIndex: 0,
+      level: 0.9,
       feedback: 0,
       envelope: {
         attack: 0.002,

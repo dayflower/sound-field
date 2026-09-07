@@ -42,12 +42,7 @@ export function createPatchController(
                 : operator[
                     key as keyof Pick<
                       OperatorSettings,
-                      | "ratio"
-                      | "fixedHz"
-                      | "detune"
-                      | "level"
-                      | "modulationIndex"
-                      | "feedback"
+                      "ratio" | "fixedHz" | "detune" | "level" | "feedback"
                     >
                   ],
           );
@@ -143,12 +138,7 @@ export function createPatchController(
         } else {
           const numericKey = key as keyof Pick<
             OperatorSettings,
-            | "ratio"
-            | "fixedHz"
-            | "detune"
-            | "level"
-            | "modulationIndex"
-            | "feedback"
+            "ratio" | "fixedHz" | "detune" | "level" | "feedback"
           >;
           operator[numericKey] = Number(input.value);
         }

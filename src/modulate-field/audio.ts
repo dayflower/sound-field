@@ -1,4 +1,5 @@
 import * as Tone from "tone";
+import { operatorLevelGain, opmModulationFrequencyDeviation } from "./level";
 import { operatorIndex } from "./routing";
 import type {
   EnvelopeSettings,
@@ -55,7 +56,9 @@ class OperatorVoice {
     this.noiseGain = new Tone.Gain(settings.waveform === "white" ? 1 : 0);
     this.envelope = new Tone.Gain(0);
     this.envelopeSettings = settings.envelope;
-    this.output = new Tone.Gain(settings.enabled ? settings.level : 0);
+    this.output = new Tone.Gain(
+      settings.enabled ? operatorLevelGain(settings.level) : 0,
+    );
     this.feedbackDelay = new Tone.Delay(FEEDBACK_DELAY_SECONDS, 0.02);
     this.feedbackGain = new Tone.Gain(noteFrequency * settings.feedback);
 
@@ -94,7 +97,7 @@ class OperatorVoice {
     );
     this.output.gain.cancelScheduledValues(startTime);
     this.output.gain.setValueAtTime(
-      settings.enabled ? settings.level : 0,
+      settings.enabled ? operatorLevelGain(settings.level) : 0,
       startTime,
     );
     this.feedbackGain.gain.cancelScheduledValues(startTime);
@@ -120,7 +123,10 @@ class OperatorVoice {
       operatorFrequency(settings, noteFrequency),
       0.02,
     );
-    this.output.gain.rampTo(settings.enabled ? settings.level : 0, 0.02);
+    this.output.gain.rampTo(
+      settings.enabled ? operatorLevelGain(settings.level) : 0,
+      0.02,
+    );
     this.feedbackGain.gain.rampTo(noteFrequency * settings.feedback, 0.02);
     this.envelopeSettings = settings.envelope;
   }
@@ -288,7 +294,9 @@ class SynthVoice {
       const settings = patch.operators[sourceIndex];
       if (!source || !target || !settings) continue;
       const modulationGain = new Tone.Gain(
-        this.noteFrequencyValue * settings.modulationIndex,
+        opmModulationFrequencyDeviation(
+          operatorFrequency(settings, this.noteFrequencyValue),
+        ),
       );
       source.output.connect(modulationGain);
       modulationGain.connect(target.oscillator.frequency);
@@ -318,7 +326,9 @@ class SynthVoice {
     for (const { gain, sourceIndex } of this.routingGains) {
       const settings = patch.operators[sourceIndex];
       if (!settings) continue;
-      const value = this.noteFrequencyValue * settings.modulationIndex;
+      const value = opmModulationFrequencyDeviation(
+        operatorFrequency(settings, this.noteFrequencyValue),
+      );
       if (time === undefined) gain.gain.rampTo(value, 0.02);
       else {
         gain.gain.cancelScheduledValues(time);

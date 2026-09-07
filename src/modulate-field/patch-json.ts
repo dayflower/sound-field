@@ -127,12 +127,6 @@ function parseOperator(value: unknown, index: number): OperatorSettings {
     fixedHz: numberAt(operator.fixedHz, `${path}.fixedHz`, 20, 2000),
     detune: numberAt(operator.detune, `${path}.detune`, -100, 100),
     level: numberAt(operator.level, `${path}.level`, 0, 1),
-    modulationIndex: numberAt(
-      operator.modulationIndex,
-      `${path}.modulationIndex`,
-      0,
-      20,
-    ),
     feedback: numberAt(operator.feedback, `${path}.feedback`, 0, 10),
     envelope: parseEnvelope(operator.envelope, `${path}.envelope`),
   };

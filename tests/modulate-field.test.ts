@@ -1,11 +1,25 @@
 import { describe, expect, it } from "vitest";
 
+import {
+  operatorLevelGain,
+  opmModulationFrequencyDeviation,
+} from "../src/modulate-field/level";
 import { defaultPatch } from "../src/modulate-field/patch";
 import { parsePatchJson } from "../src/modulate-field/patch-json";
 import { routingMatches } from "../src/modulate-field/routing";
 import { envelopeGraphMarkup } from "../src/modulate-field/ui";
 
 describe("MODULATE / FIELD baseline", () => {
+  it("spreads the OPM total-level range across one hundred level steps", () => {
+    expect(operatorLevelGain(0)).toBe(0);
+    expect(operatorLevelGain(1)).toBe(1);
+    expect(operatorLevelGain(0.5)).toBeCloseTo(10 ** (-47.625 / 20));
+  });
+
+  it("uses the modulator frequency for OPM-scale phase modulation", () => {
+    expect(opmModulationFrequencyDeviation(440)).toBeCloseTo(440 * 8 * Math.PI);
+  });
+
   it("accepts the bundled default patch without changing its schema", () => {
     expect(parsePatchJson(JSON.stringify(defaultPatch))).toEqual(defaultPatch);
   });

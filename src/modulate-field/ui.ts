@@ -13,7 +13,7 @@ import type {
 interface SliderDefinition {
   key: keyof Pick<
     OperatorSettings,
-    "ratio" | "fixedHz" | "detune" | "level" | "modulationIndex" | "feedback"
+    "ratio" | "fixedHz" | "detune" | "level" | "feedback"
   >;
   label: string;
   min: number;
@@ -41,7 +41,6 @@ const mainSliders: SliderDefinition[] = [
     suffix: " ct",
   },
   { key: "level", label: "LEVEL", min: 0, max: 1, step: 0.01 },
-  { key: "modulationIndex", label: "MOD INDEX", min: 0, max: 20, step: 0.05 },
   { key: "feedback", label: "FEEDBACK", min: 0, max: 10, step: 0.05 },
 ];
 

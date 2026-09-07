@@ -20,7 +20,6 @@ export interface OperatorSettings {
   fixedHz: number;
   detune: number;
   level: number;
-  modulationIndex: number;
   feedback: number;
   envelope: EnvelopeSettings;
 }
