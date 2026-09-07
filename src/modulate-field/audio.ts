@@ -72,8 +72,13 @@ class OperatorVoice {
     this.feedbackGain.connect(this.oscillator.frequency);
   }
 
-  start(time: Tone.Unit.Time): void {
-    this.oscillator.start(time);
+  restartAt(startTime: number): void {
+    this.oscillator.stop(startTime - DECLICK_SECONDS);
+    this.oscillator.start(startTime);
+  }
+
+  stop(time: Tone.Unit.Time): void {
+    this.oscillator.stop(time);
   }
 
   prepare(
@@ -216,10 +221,6 @@ class SynthVoice {
     return this.noteValue;
   }
 
-  start(time: Tone.Unit.Time): void {
-    for (const operator of this.operators) operator.start(time);
-  }
-
   activate(note: string, noteFrequency: number, patch: SynthPatch): void {
     if (this.disposed) return;
     const now = Tone.now();
@@ -238,6 +239,7 @@ class SynthVoice {
     patch.operators.forEach((settings, index) => {
       this.operators[index]?.prepare(settings, noteFrequency, startTime);
     });
+    for (const operator of this.operators) operator.restartAt(startTime);
     this.setRoutingGainValues(patch, startTime);
   }
 
@@ -278,6 +280,7 @@ class SynthVoice {
     const now = Tone.now();
     this.voiceGain.gain.cancelAndHoldAtTime(now);
     this.voiceGain.gain.linearRampToValueAtTime(0, now + DECLICK_SECONDS);
+    for (const operator of this.operators) operator.stop(now + DECLICK_SECONDS);
     this.state = "idle";
     this.noteValue = null;
     this.onIdle(this);
@@ -442,6 +445,5 @@ export class ModulateSynth {
     await Tone.start();
     const startTime = Tone.now() + VOICE_START_DELAY_SECONDS;
     this.noise.start(startTime);
-    for (const voice of this.voices) voice.start(startTime);
   }
 }
