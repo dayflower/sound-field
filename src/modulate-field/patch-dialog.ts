@@ -3,6 +3,7 @@ import { parsePatchJson } from "./patch-json";
 import type { SynthPatch } from "./types";
 
 export interface PatchDialog {
+  open(): void;
   dispose(): void;
 }
 
@@ -67,6 +68,7 @@ export function createPatchDialog(
   loadButton?.addEventListener("click", onLoad);
 
   return {
+    open: onOpen,
     dispose: (): void => {
       if (disposed) return;
       disposed = true;

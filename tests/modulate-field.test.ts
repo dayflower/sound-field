@@ -6,6 +6,7 @@ import {
 } from "../src/modulate-field/level";
 import { defaultPatch } from "../src/modulate-field/patch";
 import { parsePatchJson } from "../src/modulate-field/patch-json";
+import { createPresetLibrary } from "../src/modulate-field/preset-library";
 import { routingMatches } from "../src/modulate-field/routing";
 import { envelopeGraphMarkup } from "../src/modulate-field/ui";
 
@@ -75,6 +76,44 @@ describe("MODULATE / FIELD baseline", () => {
         connections: [...defaultPatch.routing.connections].reverse(),
       }),
     ).toBe(true);
+  });
+
+  it("stores patch, operator, parameters, and envelope presets independently", () => {
+    const library = createPresetLibrary();
+    const identifier = `${Date.now()}-${Math.random()}`;
+    const patchName = `Patch ${identifier}`;
+    const operatorName = `Operator ${identifier}`;
+    const parametersName = `Parameters ${identifier}`;
+    const envelopeName = `Envelope ${identifier}`;
+    const patch = structuredClone(defaultPatch);
+    patch.masterGain = 0.42;
+    const operator = structuredClone(patch.operators[0]);
+    operator.level = 0.33;
+    const { envelope, ...parameters } = operator;
+    const savedEnvelope = structuredClone(envelope);
+    savedEnvelope.release = 2.4;
+
+    expect(library.save("patch", patchName, patch)).toBe(true);
+    expect(library.save("operator", operatorName, operator)).toBe(true);
+    expect(library.save("parameters", parametersName, parameters)).toBe(true);
+    expect(library.save("envelope", envelopeName, savedEnvelope)).toBe(true);
+    expect(library.save("envelope", envelopeName, savedEnvelope)).toBe(false);
+
+    expect(
+      library.list("patch").find((item) => item.name === patchName)?.value,
+    ).toEqual(patch);
+    expect(
+      library.list("operator").find((item) => item.name === operatorName)
+        ?.value,
+    ).toEqual(operator);
+    expect(
+      library.list("parameters").find((item) => item.name === parametersName)
+        ?.value,
+    ).toEqual(parameters);
+    expect(
+      library.list("envelope").find((item) => item.name === envelopeName)
+        ?.value,
+    ).toEqual(savedEnvelope);
   });
 
   it("rejects out-of-range values, duplicate connections, and cycles", () => {

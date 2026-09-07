@@ -6,6 +6,7 @@ import { createKeyboardController } from "./keyboard-controller";
 import { defaultPatch } from "./patch";
 import { createPatchController } from "./patch-controller";
 import { createPatchDialog } from "./patch-dialog";
+import { createPresetMenus } from "./preset-menus";
 import { createStatusView } from "./status-view";
 import type { SynthPatch } from "./types";
 import { renderApp } from "./ui";
@@ -66,6 +67,13 @@ const patchDialog = createPatchDialog(
   () => patch,
   patchController.replace,
 );
+const presetMenus = createPresetMenus({
+  root,
+  getPatch: () => patch,
+  updatePatch: patchController.update,
+  replacePatch: patchController.replace,
+  openJson: patchDialog.open,
+});
 
 const stopVisualizers = startVisualizers(
   synth,
@@ -77,6 +85,7 @@ const onLanguageChange = (): void => {
   statusView.refreshLanguage();
   patchController.sync();
   keyboardController.refresh();
+  presetMenus.refresh();
 };
 document.addEventListener("languagechange", onLanguageChange);
 
@@ -87,6 +96,7 @@ const dispose = (): void => {
   window.removeEventListener("keydown", onOperatorShortcut);
   keyboardController.dispose();
   pendingNotes.clear();
+  presetMenus.dispose();
   patchDialog.dispose();
   patchController.dispose();
   statusView.dispose();

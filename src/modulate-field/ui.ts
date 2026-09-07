@@ -227,9 +227,11 @@ function operatorPanel(operator: OperatorSettings, index: number): string {
             <span data-operator-toggle-label data-i18n="${operator.enabled ? "on" : "off"}">${operator.enabled ? t("on") : t("off")}</span>
           </button>
         </div>
+        ${presetMenuMarkup("operator", index)}
       </header>
 
-      <div class="control-block">
+      <div class="control-block parameter-block">
+        <div class="block-heading"><span data-i18n="soundParameters">${t("soundParameters")}</span>${presetMenuMarkup("parameters", index)}</div>
         <label class="select-control">
           <span data-i18n="waveform">${t("waveform")}</span>
           <select data-operator="${index}" data-scope="operator" data-key="waveform" aria-label="${t("operatorName", index + 1)} ${t("waveform")}">
@@ -258,12 +260,11 @@ function operatorPanel(operator: OperatorSettings, index: number): string {
             )
             .join("")}
         </div>
+        <div class="frequency-controls">${frequencySliders}</div>
       </div>
 
-      <div class="control-block frequency-controls">${frequencySliders}</div>
-
       <div class="control-block envelope-block">
-        <div class="block-heading"><span data-i18n="amplitudeEnvelope">${t("amplitudeEnvelope")}</span><span>A · S1 · S2 · S · R</span></div>
+        <div class="block-heading"><span data-i18n="amplitudeEnvelope">${t("amplitudeEnvelope")}</span><div class="envelope-heading-actions"><span>A · S1 · S2 · S · R</span>${presetMenuMarkup("envelope", index)}</div></div>
         ${envelope}
         <div class="envelope-graph" data-envelope-graph="${index}">${envelopeGraphMarkup(operator.envelope, index)}</div>
       </div>
@@ -318,6 +319,33 @@ function automaticDiagram(
     });
   }
   return diagram;
+}
+
+function presetMenuMarkup(
+  kind: "patch" | "operator" | "parameters" | "envelope",
+  operatorIndex?: number,
+): string {
+  const labelKey = {
+    patch: "presetPatch",
+    operator: "presetOperator",
+    parameters: "presetParameters",
+    envelope: "presetEnvelope",
+  }[kind];
+  const operator =
+    operatorIndex === undefined ? "" : ` data-operator="${operatorIndex}"`;
+  return `
+    <details class="preset-menu" data-preset-menu data-preset-kind="${kind}"${operator}>
+      <summary aria-label="${t("presetMenu", t(labelKey))}"><svg class="preset-menu-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 2.5h8l3 3v8h-11z" /><path d="M5 2.5v4h5v-4M5.25 11h5.5v2h-5.5z" /></svg><span class="visually-hidden" data-preset-label>${t(labelKey)}</span></summary>
+      <div class="preset-menu-popover">
+        <button type="button" data-preset-save>${t("saveCurrentAs")}</button>
+        <div class="preset-menu-items" data-preset-items></div>
+        ${
+          kind === "patch"
+            ? `<details class="preset-json-menu"><summary data-i18n="json">${t("json")}</summary><button type="button" data-json-open data-i18n="openPatchJson">${t("openPatchJson")}</button></details>`
+            : ""
+        }
+      </div>
+    </details>`;
 }
 
 function routingDiagram(
@@ -457,7 +485,7 @@ export function renderApp(root: HTMLElement, patch: SynthPatch): void {
           <section class="synth-controls" aria-label="${t("synthControls")}">
           <div class="audio-status"><i></i><span data-audio-status data-i18n="audioSuspended">${t("audioSuspended")}</span></div>
           ${slider(-1, "masterGain", "MASTER", patch.masterGain, 0, 1, 0.01, "", "master")}
-          <button type="button" class="outline-button" data-json-button data-i18n="patchJson">${t("patchJson")}</button>
+          ${presetMenuMarkup("patch")}
           </section>
 
           <section class="keyboard-section">
@@ -487,6 +515,13 @@ export function renderApp(root: HTMLElement, patch: SynthPatch): void {
       <label class="json-input-label"><span data-i18n="schemaHint">${t("schemaHint")}</span><textarea data-json-input spellcheck="false" aria-label="${t("patchJson")}"></textarea></label>
       <p class="json-status" data-json-status role="status" aria-live="polite"></p>
       <div class="dialog-footer"><span data-i18n="pasteHint">${t("pasteHint")}</span><div><button type="button" class="outline-button" data-json-copy data-i18n="copy">${t("copy")}</button><button type="button" class="outline-button" data-json-load data-i18n="load">${t("load")}</button></div></div>
+    </dialog>
+
+    <dialog class="preset-dialog" data-preset-dialog>
+      <div class="dialog-heading"><div><span class="eyebrow" data-i18n="savedPreset">${t("savedPreset")}</span><h2 data-preset-dialog-title>${t("savePreset")}</h2></div><button type="button" data-preset-dialog-close aria-label="${t("close")}">×</button></div>
+      <label class="preset-name-label"><span data-preset-dialog-label>${t("presetName")}</span><input data-preset-name type="text" maxlength="60" autocomplete="off" /></label>
+      <p class="preset-dialog-status" data-preset-dialog-status role="status" aria-live="polite"></p>
+      <div class="dialog-footer"><span data-i18n="presetNameHint">${t("presetNameHint")}</span><div><button type="button" class="outline-button" data-preset-dialog-cancel data-i18n="cancel">${t("cancel")}</button><button type="button" class="outline-button" data-preset-dialog-confirm data-i18n="save">${t("save")}</button></div></div>
     </dialog>
   `;
 }
