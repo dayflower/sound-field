@@ -12,9 +12,6 @@
     "test": "vitest run",
     "preview": "vite preview"
   },
-  "dependencies": {
-    "tone": "^15.1.22"
-  },
   "devDependencies": {
     "@biomejs/biome": "^2.5.11",
     "@types/node": "^26.4.1",

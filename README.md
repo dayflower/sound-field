@@ -7,7 +7,7 @@ Audio files are analyzed locally in your browser and are never uploaded.
 
 - **ANALYZE / FIELD** — Real-time spectrum analyzer for local audio files.
 - **NOISE / FIELD** — Noise generator with editable frequency curves.
-- **MODULATE / FIELD** — Four-operator FM synthesizer with configurable routing.
+- **MODULATE / FIELD** — Four-operator FM synthesizer with configurable routing, LFO, key scaling, and patch libraries.
 
 ## Development
 

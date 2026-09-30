@@ -146,6 +146,7 @@ const messages: MessageCatalog = {
       synthControls: "Synth controls",
       audioSuspended: "AUDIO SUSPENDED",
       audioActive: "AUDIO ACTIVE",
+      audioFailed: "AUDIO UNAVAILABLE",
       master: "MASTER",
       patchJson: "PATCH JSON",
       presetPatch: "PATCH",
@@ -175,7 +176,7 @@ const messages: MessageCatalog = {
       octaveDown: "Octave down",
       octaveUp: "Octave up",
       keyboardHint:
-        "PC KEYS <kbd>A</kbd>–<kbd>K</kbd> · <kbd>1</kbd>–<kbd>4</kbd> toggle operators · Click or touch to play",
+        "PC KEYS <kbd>Z</kbd>–<kbd>M</kbd> / <kbd>Q</kbd>–<kbd>P</kbd> · <kbd>Shift+1</kbd>–<kbd>Shift+4</kbd> toggle operators",
       connectionPresets: "CONNECTION PRESETS",
       routing: "ROUTING",
       routingDescription:
@@ -205,10 +206,11 @@ const messages: MessageCatalog = {
       off: "OFF",
       customRouting: "CUSTOM ROUTING",
       customRoutingDiagram: "Custom routing diagram",
-      footer: "POWERED BY WEB AUDIO + TONE.JS",
+      footer: "POWERED BY WEB AUDIO",
       importExport: "IMPORT / EXPORT",
       close: "Close",
-      schemaHint: "SCHEMA VERSION 1 · CUSTOM ROUTING ALLOWED · CYCLES REJECTED",
+      schemaHint:
+        "MODULATE / FIELD PATCH VERSION 2 · CUSTOM ROUTING ALLOWED · CYCLES REJECTED",
       pasteHint: "PASTE A PATCH OR COPY THE CURRENT ONE",
       copy: "COPY",
       copied: "COPIED",
@@ -216,6 +218,100 @@ const messages: MessageCatalog = {
       loaded: "LOADED",
       patchLoaded: "PATCH LOADED",
       patchLoadFailed: "PATCH JSON could not be loaded.",
+      ui: {
+        builtInPatches: "Built-in patches",
+        savedPatches: "Saved patches",
+        savedItems: "Saved items",
+        noneSaved: "(none saved)",
+        sureDelete: "Sure?",
+        name: "Name",
+        confirm: "OK",
+        cancel: "Cancel",
+        overwrite: "Overwrite",
+        builtInName: "Built-in name",
+        saveCurrentAs: "Save current as…",
+        saveCurrentAsTitle: "Save the current settings under a name",
+        patch: "PATCH",
+        patchName: "Patch",
+        operator: "Operator",
+        oscillator: "Oscillator",
+        envelope: "Envelope",
+        keyScaling: "Key Scaling",
+        lfo: "LFO",
+        oscillatorHeader: "OSCILLATOR",
+        envelopeHeader: "ENVELOPE",
+        keyScalingHeader: "KEY SCALING",
+        exportJson: "Export JSON",
+        exportJsonTitle: "Download the current patch as a JSON file",
+        importJson: "Import JSON",
+        importJsonTitle: "Load a patch from a JSON file",
+        editJson: "Edit JSON",
+        editJsonTitle:
+          "View and edit the current patch as JSON (e.g. for custom routings)",
+        copy: "Copy",
+        apply: "Apply",
+        close: "Close",
+        copied: "Copied.",
+        copyFailed: "Copy failed.",
+        applied: "Applied.",
+        cannotImport: (name: string, reason: string) =>
+          `Cannot import ${name}: ${reason}`,
+        operatorShortcut: "Shift+1–4: operators",
+        panic: "PANIC",
+        custom: "CUSTOM",
+        carrier: "CARRIER",
+        modulator: "MODULATOR",
+        carrierAndMod: "CARRIER + MOD",
+        unused: "UNUSED",
+        wave: "WAVE",
+        freq: "FREQ",
+        ratioMode: "RATIO",
+        fixedMode: "FIXED",
+        ratio: "Ratio",
+        fixed: "Fixed",
+        pulseWidth: "Pulse Width",
+        detune: "Detune",
+        level: "Level",
+        feedback: "Feedback",
+        amSens: "AM Sens",
+        attack: "Attack",
+        d1Time: "D1 Time",
+        d1Level: "D1 Level",
+        d2Time: "D2 Time",
+        d2Level: "D2 Level",
+        release: "Release",
+        leftCurve: "L CURVE",
+        rightCurve: "R CURVE",
+        leftDepth: "L Depth",
+        rightDepth: "R Depth",
+        breakPoint: "Break Pt",
+        rate: "Rate",
+        linear: "LIN",
+        exponential: "EXP",
+        sync: "SYNC",
+        delay: "Delay",
+        fadeIn: "Fade In",
+        pmDepth: "PM Depth",
+        amDepth: "AM Depth",
+        valueEntryTitle: "Click to type a value",
+        operatorToggleTitle: "Turn this operator on or off",
+        lfoToggleTitle: "Turn the whole LFO on or off",
+        belowDepthTitle:
+          "Level change per octave below the break point (negative = quieter)",
+        aboveDepthTitle:
+          "Level change per octave above the break point (negative = quieter)",
+        breakPointTitle: "Note where level scaling is 0 dB",
+        rateScaleTitle:
+          "Envelope speed-up on higher notes (at 100%, times halve per octave above C4 and double below)",
+        keySyncTitle: "Restart the LFO on every note on",
+        lfoHint:
+          "AM is scaled per operator by AM Sens (on the modulator it moves the timbre).",
+        customRoutingTitle: "Custom routing (edit it as JSON)",
+        routingJsonHint:
+          'routing.connections lists { "from": "op1".."op4", "to": "op1".."op4" | "output" } edges; the modulation graph must not contain cycles.',
+        nativeSpectrumTitle: "AnalyserNode FFT (Blackman window)",
+        bhSpectrumTitle: "JS FFT with Blackman-Harris window (lower sidelobes)",
+      },
     },
   },
   ja: {
@@ -342,6 +438,7 @@ const messages: MessageCatalog = {
       synthControls: "シンセサイザーのコントロール",
       audioSuspended: "オーディオ停止中",
       audioActive: "オーディオ有効",
+      audioFailed: "オーディオを起動できませんでした",
       master: "マスター",
       patchJson: "パッチJSON",
       presetPatch: "パッチ",
@@ -371,7 +468,7 @@ const messages: MessageCatalog = {
       octaveDown: "オクターブを下げる",
       octaveUp: "オクターブを上げる",
       keyboardHint:
-        "PCキー <kbd>A</kbd>–<kbd>K</kbd> ・<kbd>1</kbd>–<kbd>4</kbd> でオペレーターを切替・クリックまたはタッチで演奏",
+        "PCキー <kbd>Z</kbd>–<kbd>M</kbd> / <kbd>Q</kbd>–<kbd>P</kbd> ・<kbd>Shift+1</kbd>–<kbd>Shift+4</kbd> でオペレーターを切替",
       connectionPresets: "接続プリセット",
       routing: "ルーティング",
       routingDescription:
@@ -402,11 +499,11 @@ const messages: MessageCatalog = {
       off: "オフ",
       customRouting: "カスタムルーティング",
       customRoutingDiagram: "カスタムルーティング図",
-      footer: "WEB AUDIO + TONE.JS で動作",
+      footer: "WEB AUDIO で動作",
       importExport: "インポート / エクスポート",
       close: "閉じる",
       schemaHint:
-        "スキーマ バージョン 1 ・カスタムルーティング可・循環接続は不可",
+        "MODULATE / FIELD パッチ バージョン 2 ・カスタムルーティング可・循環接続は不可",
       pasteHint: "パッチを貼り付けるか、現在のパッチをコピー",
       copy: "コピー",
       copied: "コピーしました",
@@ -414,6 +511,95 @@ const messages: MessageCatalog = {
       loaded: "読み込み済み",
       patchLoaded: "パッチを読み込みました",
       patchLoadFailed: "パッチJSONを読み込めませんでした。",
+      ui: {
+        builtInPatches: "内蔵パッチ",
+        savedPatches: "保存したパッチ",
+        savedItems: "保存した音色",
+        noneSaved: "保存なし",
+        sureDelete: "削除？",
+        name: "名前",
+        confirm: "決定",
+        cancel: "取消",
+        overwrite: "上書き",
+        builtInName: "内蔵名",
+        saveCurrentAs: "現在値を別名で保存…",
+        saveCurrentAsTitle: "現在の設定を名前付きで保存",
+        patch: "パッチ",
+        patchName: "パッチ",
+        operator: "オペレーター",
+        oscillator: "発振器",
+        envelope: "エンベロープ",
+        keyScaling: "キースケーリング",
+        lfo: "LFO",
+        oscillatorHeader: "発振器",
+        envelopeHeader: "エンベロープ",
+        keyScalingHeader: "キースケーリング",
+        exportJson: "JSON 書出",
+        exportJsonTitle: "現在のパッチを JSON ファイルに書き出す",
+        importJson: "JSON 読込",
+        importJsonTitle: "JSON ファイルからパッチを読み込む",
+        editJson: "JSON 編集",
+        editJsonTitle: "現在のパッチを JSON で表示・編集する",
+        copy: "コピー",
+        apply: "適用",
+        close: "閉じる",
+        copied: "コピーしました。",
+        copyFailed: "コピーできませんでした。",
+        applied: "適用しました。",
+        cannotImport: (name: string, reason: string) =>
+          `${name} を読み込めません: ${reason}`,
+        operatorShortcut: "Shift+1〜4: オペレーター切替",
+        panic: "全音停止",
+        custom: "カスタム",
+        carrier: "キャリア",
+        modulator: "モジュレーター",
+        carrierAndMod: "キャリア＋変調",
+        unused: "未接続",
+        wave: "波形",
+        freq: "周波数",
+        ratioMode: "比率",
+        fixedMode: "固定",
+        ratio: "比率",
+        fixed: "固定周波数",
+        pulseWidth: "パルス幅",
+        detune: "デチューン",
+        level: "レベル",
+        feedback: "フィードバック",
+        amSens: "AM 感度",
+        attack: "アタック",
+        d1Time: "D1 時間",
+        d1Level: "D1 レベル",
+        d2Time: "D2 時間",
+        d2Level: "D2 レベル",
+        release: "リリース",
+        leftCurve: "低音側カーブ",
+        rightCurve: "高音側カーブ",
+        leftDepth: "低音側深さ",
+        rightDepth: "高音側深さ",
+        breakPoint: "基準音",
+        rate: "レート",
+        linear: "線形",
+        exponential: "指数",
+        sync: "同期",
+        delay: "遅延",
+        fadeIn: "フェードイン",
+        pmDepth: "ピッチ変調量",
+        amDepth: "振幅変調量",
+        valueEntryTitle: "クリックして数値を入力",
+        operatorToggleTitle: "オペレーターのオン／オフ",
+        lfoToggleTitle: "LFO 全体のオン／オフ",
+        belowDepthTitle: "基準音より低い音域の、1 オクターブあたりのレベル変化",
+        aboveDepthTitle: "基準音より高い音域の、1 オクターブあたりのレベル変化",
+        breakPointTitle: "レベル補正が 0 dB になる基準音",
+        rateScaleTitle: "高音ほどエンベロープを速める割合",
+        keySyncTitle: "発音ごとに LFO の位相をリセット",
+        lfoHint: "振幅変調はオペレーターごとの AM 感度で調整されます。",
+        customRoutingTitle: "カスタムルーティング（JSON で編集）",
+        routingJsonHint:
+          'routing.connections は { "from": "op1".."op4", "to": "op1".."op4" | "output" } の接続一覧です。変調グラフに循環は指定できません。',
+        nativeSpectrumTitle: "AnalyserNode FFT（Blackman 窓）",
+        bhSpectrumTitle: "JS FFT（Blackman-Harris 窓、低サイドローブ）",
+      },
     },
   },
 };
@@ -532,6 +718,20 @@ export function refreshI18n(): void {
   translatePage();
 }
 
+export function setTranslatedText(element: HTMLElement, key: string): void {
+  element.dataset.i18n = key;
+  element.textContent = translate(key);
+}
+
+export function setTranslatedAttribute(
+  element: HTMLElement,
+  attribute: "title" | "aria-label" | "placeholder",
+  key: string,
+): void {
+  element.setAttribute(`data-i18n-${attribute}`, key);
+  element.setAttribute(attribute, translate(key));
+}
+
 function translatePage(): void {
   if (typeof document === "undefined") return;
   document.documentElement.lang = language;
@@ -542,6 +742,14 @@ function translatePage(): void {
       element.setAttribute(element.dataset.i18nAttr, text);
     else element.textContent = text;
   });
+  for (const attribute of ["title", "aria-label", "placeholder"] as const) {
+    document
+      .querySelectorAll<HTMLElement>(`[data-i18n-${attribute}]`)
+      .forEach((element) => {
+        const key = element.getAttribute(`data-i18n-${attribute}`);
+        if (key) element.setAttribute(attribute, translate(key));
+      });
+  }
   document
     .querySelectorAll<HTMLSelectElement>("[data-language-select]")
     .forEach((select) => {

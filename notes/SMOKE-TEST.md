@@ -13,8 +13,11 @@ playable audio file.
 | `noise-field.html` | Play/stop, noise type, and output level | Playback state and the live spectrum switch correctly, and volume adjustments take effect. |
 | `noise-field.html` | CURVE/10 BAND, faders, SMOOTH, FLATTEN, and RESET | Edits are consistently reflected in the curve, band values, and JSON output. |
 | `noise-field.html` | Source analysis | After selecting an audio source, results can be applied to the CUSTOM curve with either MEAN or MEDIAN. |
-| `modulate-field.html` | On-screen keyboard, PC keyboard, and octave | Note starts and stops are reflected, and input still works after changing octaves. |
-| `modulate-field.html` | Operator editing, eight routing options, and JSON import/export | Parameters and routing display remain in sync. The default JSON can be displayed, copied, and reloaded. |
+| `modulate-field.html` | On-screen keyboard, two PC keyboard rows, glissando, octave, and PANIC | Notes start and stop, overlapping inputs release correctly, and no note remains after PANIC or window blur. Shift+1 through Shift+4 toggle operators without playing a note. |
+| `modulate-field.html` | Four operators, key scaling, LFO, and eight routing options | Controls update the sound and diagrams; a custom routing imported through JSON is displayed. The live envelope and active voice count follow playback. |
+| `modulate-field.html` | PATCH menu and component libraries | Built-in and saved patches appear in one menu. Built-in patches cannot be deleted or overwritten; saved patches can. Component settings can be saved, loaded, and deleted. |
+| `modulate-field.html` | JSON file import/export, JSON editor, and reload | A `modulate-field-patch` version 2 file round-trips including the name and custom routing. The current patch survives reload. Invalid routing reports an error. |
+| `modulate-field.html` | Native/BH spectrum toggle and production build | Both modes render; the AudioWorklet loads from the built page under a relative base path. |
 
 When recording results, add the browser name and version, tested audio format,
 result (pass/fail), and reproduction steps for any failure to the pull request
