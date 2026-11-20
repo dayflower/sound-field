@@ -550,6 +550,72 @@ export const PRESETS: Record<string, Patch> = {
     routing: route("SERIAL"),
     lfo: lfo(),
   },
+  Piano: {
+    // Acoustic piano: a fixed-pitch hammer thump (OP1) next to the strings (2 + 3 -> 4).
+    // OP2 and OP3 share the same detune so that the partials stretch slightly without
+    // landing next to each other, which would make the low register beat.
+    operators: [
+      op({
+        freqMode: "fixed",
+        fixed: 70,
+        level: 0.15,
+        feedback: 0.55,
+        env: {
+          attack: 0.001,
+          d1: 0.05,
+          l1: 0.3,
+          d2: 0.15,
+          l2: 0,
+          release: 0.1,
+        },
+        keyScale: { leftDepth: -6, rightDepth: 2 },
+      }),
+      op({
+        ratio: 7,
+        detune: 2,
+        level: 0.04,
+        feedback: 0.06,
+        env: {
+          attack: 0.001,
+          d1: 0.14,
+          l1: 0.66,
+          d2: 5.4,
+          l2: 0.19,
+          release: 0.2,
+        },
+        keyScale: { leftDepth: 7.5, rightDepth: -14.5, rate: 0.6 },
+      }),
+      op({
+        ratio: 1,
+        detune: 2,
+        level: 0.12,
+        feedback: 0.04,
+        env: {
+          attack: 0.001,
+          d1: 0.27,
+          l1: 0.7,
+          d2: 2.4,
+          l2: 0.42,
+          release: 0.2,
+        },
+        keyScale: {
+          leftDepth: 4.75,
+          leftCurve: "exp",
+          rightDepth: -6.25,
+          rate: 0.42,
+        },
+      }),
+      op({
+        ratio: 1,
+        level: 0.8,
+        feedback: 0.045,
+        env: { attack: 0.002, d1: 0.4, l1: 0.3, d2: 2.8, l2: 0, release: 0.2 },
+        keyScale: { rate: 0.7 },
+      }),
+    ],
+    routing: conn([1, "out"], [2, 4], [3, 4], [4, "out"]),
+    lfo: lfo(),
+  },
   "E.Piano": {
     // Tine (1 -> 2) layered with the body (3 -> 4), as on the DX7 E.Piano.
     operators: [
