@@ -20,8 +20,13 @@ const electricPiano = PRESETS["E.Piano"];
 if (!electricPiano) throw new Error("Missing E.Piano preset");
 
 describe("MODULATE / FIELD FM engine", () => {
-  it("ships nine playable built-in patches", () => {
-    expect(Object.keys(PRESETS)).toHaveLength(9);
+  it("ships ten playable built-in patches", () => {
+    expect(Object.keys(PRESETS)).toHaveLength(10);
+    expect(Object.keys(PRESETS).slice(0, 3)).toEqual([
+      "Init",
+      "Piano",
+      "E.Piano",
+    ]);
     for (const preset of Object.values(PRESETS)) {
       expect(preset.operators).toHaveLength(4);
       expect(routingOrder(preset.routing)).toHaveLength(4);
